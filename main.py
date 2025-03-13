@@ -29,14 +29,9 @@ def save_to_markdown(log_data, save_path):
     fixed_timestamp_length = 19 
     fixed_event_length = 5
 
-    # 구분선 길이를 맞추기 위한 추가적인 길이 계산
-    fixed_timestamp_length2 = fixed_timestamp_length
-    fixed_event_length2     = fixed_event_length
-    max_message_length2     = max_message_length
-
     # 마크다운 헤더 및 구분선 생성
     md_content  = f"|{'Timestamp'.ljust(fixed_timestamp_length)}|{'Event'.ljust(fixed_event_length)}|{'Message'.ljust(max_message_length)}|\n"
-    md_content += f"|{'-' * fixed_timestamp_length2}|{'-' * fixed_event_length2}|{'-' * max_message_length2}|\n"
+    md_content += f"|{'-' * fixed_timestamp_length}|{'-' * fixed_event_length}|{'-' * max_message_length}|\n"
 
     # 각 줄을 파싱하여 마크다운 테이블 형식으로 추가
     for i, line in enumerate(lines):
