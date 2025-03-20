@@ -1,6 +1,7 @@
 # 상수 정의
 FILE_DO_ERROR = '파일 처리 중 오류 발생했습니다.'
 FILE_DECODE_ERROR = '파일 디코딩 중 오류 발생했습니다.'
+FILE_ENCODE_ERROR = '파일 인코딩 중 오류 발생했습니다.'
 FILE_NOT_FOUND_ERROR = '파일을 찾을 수 없습니다.'
 FILE_PRINT = '=============================== 파일출력 ==============================='
 CSV_READ_ERROR = 'CSV 파일을 읽는 데 실패했습니다'
@@ -83,7 +84,10 @@ def save_binfile(data, filename):
         with open(filename, 'wb') as file:
             for row in data:
                 for item in row:
-                    file.write(item.encode('utf-8') + b'\0')
+                    try : 
+                        file.write(item.encode('utf-8') + b'\0')
+                    except UnicodeEncodeError as e:
+                        print(f'{FILE_ENCODE_ERROR}: {e}')
     except IOError as e:
         print(f'{FILE_DO_ERROR}: {e}')
 
