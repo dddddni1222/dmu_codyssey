@@ -43,10 +43,10 @@ class DummySensor:
             if len(day) != 2 or not day.isdigit() or not (1 <= int(day) <= 31):
                 raise ValueError("일은 01에서 31 사이의 숫자로 입력해야 합니다.")
             
-            if len(hour) != 2 or not hour.isdigit() or not (1 <= int(hour) <= 23):
-                raise ValueError("시간은 01에서 23 사이의 숫자로 입력해야 합니다.")
-            if len(minu) != 2 or not minu.isdigit() or not (1 <= int(minu) <= 59):
-                raise ValueError("분은 01에서 59 사이의 숫자로 입력해야 합니다.")     
+            if len(hour) != 2 or not hour.isdigit() or not (0 <= int(hour) <= 23):
+                raise ValueError("시간은 00에서 23 사이의 숫자로 입력해야 합니다.")
+            if len(minu) != 2 or not minu.isdigit() or not (0 <= int(minu) <= 59):
+                raise ValueError("분은 00에서 59 사이의 숫자로 입력해야 합니다.")     
             NOW = f'{year}-{month}-{day} {hour}:{minu}'
             
         except ValueError as e:
