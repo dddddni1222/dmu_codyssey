@@ -5,11 +5,13 @@ FILE_NOT_FOUND_ERROR = '파일을 찾을 수 없습니다.'
 FILE_PRINT = '=============================== 파일출력 ==============================='
 CSV_READ_ERROR = 'CSV 파일을 읽는 데 실패했습니다'
 UNKNOWN_ERROR = '알 수 없는 오류가 발생했습니다'
+CSV_FILE = r'\Mars_Base_Inventory_danger.csv'
+BIN_FILE = r'\Mars_Base_Inventory_List.bin'
+SAMPLE_PATH = r'C:\Users\YourUsername\Desktop\Mars_Base_Inventory_List.csv'
 
 def get_file():
-    sample_path = r'C:\Users\YourUsername\Desktop\Mars_Base_Inventory_List.csv'
 
-    file_path = input(f'불러 올 파일의 경로를 입력해 주세요. (예시: {sample_path}): ').strip('"')
+    file_path = input(f'불러 올 파일의 경로를 입력해 주세요. (예시: {SAMPLE_PATH}): ').strip('"')
 
     return file_path
 
@@ -114,9 +116,7 @@ def main():
     try:
         # 1. Mars_Base_Inventory_List.csv 의 내용을 읽어 들어서 출력한다. 
         file_path = get_file()
-        if file_path is None:
-            return
-
+        
         log_data = read_file(file_path)
         if log_data is None:
             return
@@ -124,8 +124,8 @@ def main():
         print(f'{FILE_PRINT} : \n{log_data}')
         
         file_dir = get_filepath(file_path)
-        SAVECSV = file_dir + r'\Mars_Base_Inventory_danger.csv'
-        SAVEBIN = file_dir + r'\Mars_Base_Inventory_List.bin'
+        SAVECSV = file_dir + CSV_FILE
+        SAVEBIN = file_dir + BIN_FILE
 
         # 2. Mars_Base_Inventory_List.csv 내용을 읽어서 Python의 리스트(List) 객체로 변환한다.
         list_data = read_csv_to_list(file_path)
