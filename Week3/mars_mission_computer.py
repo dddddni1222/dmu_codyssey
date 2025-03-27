@@ -51,8 +51,10 @@ class DummySensor:
             
         except ValueError as e:
             print(f"입력 오류: {e}")
+            return
         except Exception as e:
             print("알 수 없는 오류가 발생했습니다.")
+            return
         
         log_entry = f'================= {NOW} ================= \n' \
                     f'화성 기지 내부 온도: {self.env_values['mars_base_internal_temperature']}°C, \n' \
@@ -67,6 +69,7 @@ class DummySensor:
                 file.write(log_entry)
         except Exception as e:
             print(f'Unexpected error: {e}')
+            return
         
         # 로그 내용 반환 (디버깅이나 다른 용도로)
         return self.env_values    
