@@ -14,6 +14,35 @@ class Calculator:
         self.new_input = True
         self.display_state = None
 
+    def add(self, a: Decimal, b: Decimal) -> Decimal:
+        return a + b
+
+    def subtract(self, a: Decimal, b: Decimal) -> Decimal:
+        return a - b
+
+    def multiply(self, a: Decimal, b: Decimal) -> Decimal:
+        return a * b
+
+    def divide(self, a: Decimal, b: Decimal) -> Decimal:
+        return a / b if b != 0 else Decimal('inf')
+
+    def percent(self):
+        try:
+            self.current = str(Decimal(self.current) / 100)
+            self.display_state = None
+        except InvalidOperation:
+            self.current = "Error"
+            self.reset()
+
+    def negative_positive(self):
+        try:
+            if self.current and self.current != "0":
+                self.current = self.current[1:] if self.current.startswith('-') else '-' + self.current
+            self.display_state = None
+        except:
+            self.current = "Error"
+            self.reset()
+
     def input_number(self, number: str):
         if len(self.current) >= 16 and not self.new_input: return
         if self.new_input or self.current == "0":
@@ -28,26 +57,11 @@ class Calculator:
             self.current += '.'
         self.display_state = None
 
-    def toggle_sign(self):
-        try:
-            if self.current and self.current != "0":
-                self.current = self.current[1:] if self.current.startswith('-') else '-' + self.current
-            self.display_state = None
-        except:
-            self.current = "Error"
-            self.reset()
-
     def backspace(self):
-        if self.current != "0":  # 계산 결과 포함 모든 상태에서 동작
+        if self.current != "0":
             self.current = self.current[:-1] or "0"
-            self.new_input = False  # 백스페이스 후 숫자 이어서 입력 가능
+            self.new_input = False
         self.display_state = None
-
-    def calculate(self, a: Decimal, b: Decimal, op: str) -> Decimal:
-        ops = {'+': lambda x, y: x + y, '-': lambda x, y: x - y, '×': lambda x, y: x * y,
-               '÷': lambda x, y: x / y if y != 0 else Decimal('inf'),
-               '%': lambda x, y: x % y if y != 0 else Decimal('inf')}
-        return ops[op](a, b)
 
     def set_operator(self, op: str):
         try:
@@ -66,7 +80,8 @@ class Calculator:
     def equal(self):
         try:
             if self.previous is not None and self.operator:
-                result = self.calculate(Decimal(self.previous), Decimal(self.current), self.operator)
+                ops = {'+': self.add, '-': self.subtract, '×': self.multiply, '÷': self.divide, '%': lambda x, y: x % y if y != 0 else Decimal('inf')}
+                result = ops[self.operator](Decimal(self.previous), Decimal(self.current))
                 if result == Decimal('inf'):
                     self.current = "Error"
                 else:
@@ -147,7 +162,7 @@ class CalculatorUI(QWidget):
             '%': lambda: self.calculator.set_operator('%'),
             '=': self.calculator.equal,
             'AC': self.calculator.reset,
-            '+/-': self.calculator.toggle_sign,
+            '+/-': self.calculator.negative_positive,
             '←': self.calculator.backspace
         }
         actions.get(text, lambda: None)()
@@ -186,7 +201,7 @@ class CalculatorUI(QWidget):
                 '%': lambda: self.calculator.set_operator('%'),
                 '=': self.calculator.equal,
                 'AC': self.calculator.reset,
-                '+/-': self.calculator.toggle_sign,
+                '+/-': self.calculator.negative_positive,
                 '←': self.calculator.backspace
             }
             actions.get(text, lambda: None)()
